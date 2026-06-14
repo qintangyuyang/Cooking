@@ -15,7 +15,17 @@ public abstract class UIBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        
+    }
+
+    protected virtual void Awake()
+    {
         Init();
+    }
+
+    protected virtual void Update()
+    {
+        
     }
 
     /// <summary>

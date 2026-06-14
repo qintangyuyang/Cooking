@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class UIProcessPanel : UIBase
 {
-    
-    void Start()
+    public override void Init()
     {
         
     }
-
     
-    void Update()
-    {
-        
-    }
+    
 }

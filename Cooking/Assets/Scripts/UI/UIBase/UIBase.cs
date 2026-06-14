@@ -11,9 +11,5 @@ public abstract class UIBase : MonoBehaviour
     public virtual void OnClose(){}
     public virtual void OnPause(){}
     public virtual void OnResume(){}
-
-    public void Close()
-    {
-        //实际关闭UI的方法
-    }
+    
 }

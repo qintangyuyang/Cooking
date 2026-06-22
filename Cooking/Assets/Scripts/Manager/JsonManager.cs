@@ -66,15 +66,15 @@ public class JsonManager
     /// <returns></returns>
     public T LoadData<T>(string fileName, JsonType jsonType = JsonType.LitJson) where T : new()
     {
-        //先在默认数据文件中去找
-        string path = Application.streamingAssetsPath + "/" + fileName + ".json";
-        //如果不在默认文件中 就去 读写文件中找
+        //先找玩家的本地存储路径里有没有
+        string path = Application.persistentDataPath + "/" + fileName + ".json";
+        //如果本地路径里没有，去默认存储的路径里去找
         if (!File.Exists(path))
         {
-            path = Application.persistentDataPath + "/" + fileName + ".json";
+            path = Application.streamingAssetsPath + "/" + fileName + ".json";
         }
 
-        //如果读写文件中没有 就返回一个默认对象
+        //如果都没有 就返回一个默认对象
         if (!File.Exists(path))
         {
             return new T();

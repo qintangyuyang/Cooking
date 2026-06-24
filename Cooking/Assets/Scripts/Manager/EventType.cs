@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventType 
+namespace Cooking.Manager
 {
-    LanguageChanged,
+    public enum EventType
+    {
+        LanguageChanged,
+    }
 }

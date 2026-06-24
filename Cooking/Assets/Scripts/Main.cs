@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cooking.Manager;
+using Cooking.UI;
 using UnityEngine;
 
-public class Main : MonoBehaviour
+namespace Cooking
 {
-    void Start()
+    public class Main : MonoBehaviour
     {
-        UIManager.Instance.OpenUI<UIProcessPanel>();
-    }
-    
-    void Update()
-    {
-        
+        void Start()
+        {
+            UIManager.Instance.OpenUI<UIProcessPanel>();
+        }
+
+        void Update()
+        {
+
+        }
     }
 }

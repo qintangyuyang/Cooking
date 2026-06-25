@@ -10,6 +10,7 @@ namespace Cooking
     {
         void Start()
         {
+            LanguageManager.Instance.Initialize();
             UIManager.Instance.OpenUI<UIProcessPanel>();
         }
 

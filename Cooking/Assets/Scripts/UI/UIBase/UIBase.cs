@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cooking.Manager;
 using UnityEngine;
+using EventType = Cooking.Manager.EventType;
 
 namespace Cooking.UI
 {
@@ -33,7 +35,13 @@ namespace Cooking.UI
 
         protected virtual void Awake()
         {
+            EventManager.RegisterEvent(EventType.LanguageChanged,(Action)OnLanguageChanged);
             Init();
+        }
+
+        protected void OnDestroy()
+        {
+            EventManager.UnregisterEvent(EventType.LanguageChanged, (Action)OnLanguageChanged);
         }
 
         protected virtual void Update()
@@ -45,5 +53,7 @@ namespace Cooking.UI
         /// 主要用于初始化 按钮事件监听等
         /// </summary>
         public abstract void Init();
+        
+        protected virtual void OnLanguageChanged(){}
     }
 }

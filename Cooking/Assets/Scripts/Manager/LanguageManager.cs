@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,6 @@ namespace Cooking.Manager
     public class LanguageManager
     {
         private static LanguageManager _instance;
-
         public static LanguageManager Instance
         {
             get
@@ -34,7 +34,6 @@ namespace Cooking.Manager
                 return _instance;
             }
         }
-        
         private LanguageManager(){}
 
         //默认语言-中文
@@ -58,30 +57,70 @@ namespace Cooking.Manager
 
         public void Initialize()
         {
-            
+            LanguageType savedLang = LoadPreference();
+            LoadLanguage(savedLang);
         }
         
         /// <summary>
         /// 加载多语言
         /// </summary>
         /// <param name="language"></param>
-        private void LoadLanguage(string language)
+        private void LoadLanguage(LanguageType language)
         {
+
+            if (!LanguageCodeMap.TryGetValue(language, out string languageCode))
+            {
+                Debug.LogError($"[LanguageManager] 不支持的语言类型: {language}");
+                return;
+            }
+            
             //规定多语言的json文件都放在默认的StreamingAssets文件夹下了
-            string path = Application.streamingAssetsPath + "/Config/Language/" + language + ".json";
-            
-            string jsonStr = "";
-            //根据路径加载json字符串
-            jsonStr = File.ReadAllText(path);
-            //将反序列化出来的数据装入字典
-            languageDic = JsonMapper.ToObject<Dictionary<string, string>>(jsonStr);
-            
-            //触发一下多语言改变的事件
-            EventManager.TriggerEvent(EventType.LanguageChanged);
+            string path = Application.streamingAssetsPath + "/Config/Language/" + languageCode + ".json";
+
+            try
+            {
+                if (!File.Exists(path))//路径不存在
+                {
+                    Debug.LogError($"[LanguageManager] 语言文件不存在: {path}");
+                    if (language != defaultLanguage)
+                    {
+                        LoadLanguage(defaultLanguage);//加载默认语言
+                    }
+                    return;
+                }
+                string jsonString = File.ReadAllText(path);
+                if (string.IsNullOrEmpty(jsonString))
+                {
+                    Debug.LogWarning($"[LanguageManager] 语言文件为空: {path}");
+                    return;
+                }
+
+                var newDic = JsonMapper.ToObject<Dictionary<string, string>>(jsonString);
+                if (newDic != null)
+                {
+                    languageDic = newDic;
+                    currentLanguage = language;
+                    EventManager.TriggerEvent(EventType.LanguageChanged);//触发多语言切换事件
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[LanguageManager] 加载语言失败: {path}\n{e}");
+                if (language != defaultLanguage)
+                {
+                    LoadLanguage(defaultLanguage);//加载默认语言
+                }
+            }
         }
 
         public string GetText(string key, params object[] args)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                Debug.LogError("[LanguageManager] GetText key 为空");
+                return key;
+            }
             if (languageDic.TryGetValue(key, out string value))
             {
                 return args.Length > 0 ? string.Format(value, args) : value;
@@ -90,10 +129,51 @@ namespace Cooking.Manager
             return key;
         }
 
-        public void SwitchLanguage(string language)
+        public void SwitchLanguage(LanguageType language)
         {
-            //if(language==currentLanguage) return;
+            if(language==currentLanguage) return;
             LoadLanguage(language);
+
+            if (currentLanguage == language)
+            {
+                //保存在偏好文件夹里
+                SavePreference(language);
+            }
         }
+
+        //语言偏好保存本地实现持久化
+        private void SavePreference(LanguageType language)
+        {
+            var data = new Dictionary<string, string>()
+            {
+                { "language", LanguageCodeMap[language] },
+            };
+            JsonManager.Instance.SaveData(data, PreferenceFileName);
+        }
+
+        private LanguageType LoadPreference()
+        {
+            try
+            {
+                var data = JsonManager.Instance.LoadData<Dictionary<string, string>>(PreferenceFileName);
+
+                if (data != null && data.TryGetValue("language", out string langCode))
+                {
+                    foreach (var kvp in LanguageCodeMap)
+                    {
+                        if (kvp.Value == langCode)
+                        {
+                            return kvp.Key;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[LanguageManager] 偏好加载失败，使用默认语言: {e.Message}");
+            }
+
+            return defaultLanguage;
+        } 
     }
 }

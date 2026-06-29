@@ -1,3 +1,7 @@
 {
-  "text1": "helo"
+  "COMMON_TEXT_KEY_1": "Start",
+  "COMMON_TEXT_KEY_2": "Continue",
+  "COMMON_TEXT_KEY_3": "Window Collection",
+  "COMMON_TEXT_KEY_4": "Setting",
+  "COMMON_TEXT_KEY_5": "Quit"
 }

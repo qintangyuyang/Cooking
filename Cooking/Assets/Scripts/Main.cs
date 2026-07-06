@@ -11,7 +11,7 @@ namespace Cooking
         void Start()
         {
             LanguageManager.Instance.Initialize();
-            UIManager.Instance.OpenUI<UIProcessPanel>();
+            UIManager.Instance.OpenUI<UIStartPanel>();
         }
 
         void Update()

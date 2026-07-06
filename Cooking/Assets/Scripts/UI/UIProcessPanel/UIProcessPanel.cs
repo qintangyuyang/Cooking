@@ -14,7 +14,7 @@ namespace Cooking.UI
         
         public override void Init()
         {
-            text = transform.Find("Coin_Img/Num_Txt").GetComponent<TextMeshProUGUI>();
+            //text = transform.Find("Coin_Img/Num_Txt").GetComponent<TextMeshProUGUI>();
 
             RefreshText();
             
@@ -27,7 +27,7 @@ namespace Cooking.UI
 
         private void RefreshText()
         {
-            text.text = LanguageManager.Instance.GetText("text1");
+            //text.text = LanguageManager.Instance.GetText("text1");
         }
     }
 }

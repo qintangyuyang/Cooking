@@ -43,7 +43,7 @@ namespace Cooking.UI
         {
             EventManager.UnregisterEvent(EventType.LanguageChanged, (Action)OnLanguageChanged);
         }
-
+        
         protected virtual void Update()
         {
 

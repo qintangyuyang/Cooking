@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cooking.Manager;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Cooking.UI
 {

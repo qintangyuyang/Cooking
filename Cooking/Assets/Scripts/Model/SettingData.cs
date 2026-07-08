@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cooking.Manager;
 using UnityEngine;
 
-namespace Cooking.Data
+namespace Cooking.Model
 {
     /// <summary>
     /// 游戏设置

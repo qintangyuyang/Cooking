@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cooking.Data;
+using Cooking.Model;
 using UnityEngine;
 
 namespace Cooking.Manager

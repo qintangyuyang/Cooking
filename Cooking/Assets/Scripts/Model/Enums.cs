@@ -1,5 +1,5 @@
 
-namespace Cooking.Data
+namespace Cooking.Model
 {
     /// <summary>
     /// 季节数据——默认序列化为int（0-3）

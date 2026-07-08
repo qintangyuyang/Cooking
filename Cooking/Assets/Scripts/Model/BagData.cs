@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cooking.Data
+namespace Cooking.Model
 {
     /// <summary>
     /// 背包数据

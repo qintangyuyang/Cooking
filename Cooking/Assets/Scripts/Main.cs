@@ -11,6 +11,7 @@ namespace Cooking
         void Start()
         {
             LanguageManager.Instance.Initialize();
+            PlayerDataManager.Instance.LoadAllPlayerData();
             UIManager.Instance.OpenUI<UIStartPanel>();
         }
 

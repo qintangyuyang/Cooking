@@ -2,21 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Cooking.Model;
 using LitJson;
 using Unity.Collections;
 using UnityEngine;
 
 namespace Cooking.Manager
 {
-    /// <summary>
-    /// 语言类型的枚举
-    /// </summary>
-    public enum LanguageType
-    {
-        Chinese,    //zh-CN
-        English,    //en-US
-    }
-    
     /// <summary>
     /// 多语言管理器
     /// </summary>

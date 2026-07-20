@@ -3730,6 +3730,7 @@ GameObject:
   - component: {fileID: 2209169498862071274}
   - component: {fileID: 5558328058181701807}
   - component: {fileID: 4623454557129075262}
+  - component: {fileID: 3099845812589593783}
   m_Layer: 5
   m_Name: UIsettingPanel
   m_TagString: Untagged
@@ -3868,6 +3869,18 @@ MonoBehaviour:
   - key: NextPage
     componentType: Image
     target: {fileID: 5394647312100450233}
+--- !u!114 &3099845812589593783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5299891253229472457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c367dda0d676b443bb6dc439e30633c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5350153755908039967
 GameObject:
   m_ObjectHideFlags: 0

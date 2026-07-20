@@ -84,6 +84,7 @@ namespace Cooking.UI
         private void OnClickSettingBtn()
         {
             //设置界面逻辑
+            UIManager.Instance.OpenUI<UISettingPanel>();
         }
 
         private void OnClickQuitBtn()

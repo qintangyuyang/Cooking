@@ -1,9 +1,9 @@
-{
-  "item1": {"ItemText": 0},
-  "item2": {"ItemSlider": 1},
-  "item3": {"ItemSlider": 1},
-  "item4": {"ItemSlider": 1},
-  "item5": {"ItemSlider": 1},
-  "item6": {"ItemText": 0},
-  "item7": {"ItemSwitch": 2}
-}
+[
+  "ItemText",
+  "ItemSlider",
+  "ItemSlider",
+  "ItemSlider",
+  "ItemSlider",
+  "ItemText",
+  "ItemSwitch"
+]

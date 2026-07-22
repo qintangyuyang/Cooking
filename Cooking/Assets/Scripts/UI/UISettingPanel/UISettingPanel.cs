@@ -15,13 +15,10 @@ namespace Cooking.UI
         {
             //通用
             General,
-
             //键位
             Key,
-
             //教程
             Tutorial,
-
             //其他
             Other
         }
@@ -48,6 +45,9 @@ namespace Cooking.UI
 
         private BtnType CurrentBtnType = BtnType.General;
 
+        /// <summary>装通用设置配置表里的Type类型</summary>
+        private List<int> GeneralSettingDataList = new List<int>();
+
         private const string GeneralCfgName = "GeneralSettingCfg";
 
         public override void Init()
@@ -72,8 +72,12 @@ namespace Cooking.UI
 
                 string path = Application.streamingAssetsPath + "/Config/GameSetting/" + GeneralCfgName + ".json";
                 var jsonString=File.ReadAllText(path);
-                var SettingData = JsonMapper.ToObject<Dictionary<string, Dictionary<string, int>>>(jsonString);
-                _PagePanelGeneralList.InitListView(1, InitPagePanelGeneralList);
+                var SettingDataDic = JsonMapper.ToObject<Dictionary<string, Dictionary<string, int>>>(jsonString);
+                foreach (var value in SettingDataDic.Values)
+                {
+                    //GeneralSettingDataList.Add(value);
+                }
+                _PagePanelGeneralList.InitListView(GeneralSettingDataList.Count, InitPagePanelGeneralList);
             }
 
             RefreshBtnType(BtnType.General);
@@ -86,6 +90,10 @@ namespace Cooking.UI
 
         private LoopListViewItem2 InitPagePanelGeneralList(LoopListView2 list, int index)
         {
+            if (index < 0 || index >= GeneralSettingDataList.Count)
+            {
+                return null;
+            }
             var item = list.NewListViewItem("ItemText");
             return item;
         }

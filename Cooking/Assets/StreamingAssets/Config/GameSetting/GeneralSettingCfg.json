@@ -1,9 +1,9 @@
 {
-  "item1": {"type": 0},
-  "item2": {"type": 1},
-  "item3": {"type": 1},
-  "item4": {"type": 1},
-  "item5": {"type": 1},
-  "item6": {"type": 0},
-  "item7": {"type": 2}
+  "item1": {"ItemText": 0},
+  "item2": {"ItemSlider": 1},
+  "item3": {"ItemSlider": 1},
+  "item4": {"ItemSlider": 1},
+  "item5": {"ItemSlider": 1},
+  "item6": {"ItemText": 0},
+  "item7": {"ItemSwitch": 2}
 }

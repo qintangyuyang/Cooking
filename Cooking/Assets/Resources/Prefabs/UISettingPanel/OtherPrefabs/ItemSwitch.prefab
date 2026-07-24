@@ -271,7 +271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8634353919870463753
 RectTransform:
   m_ObjectHideFlags: 0
@@ -289,11 +289,11 @@ RectTransform:
   - {fileID: 8215385042133417981}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.0025787354, y: -275.99997}
   m_SizeDelta: {x: 1077, y: 73}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8140938454868246859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,7 +306,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66df829f3af4454985a387da37a85be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bindingInfos: []
+  bindingInfos:
+  - key: WindowContent
+    componentType: GameObject
+    target: {fileID: 955416782449544720}
+  - key: WindowContent
+    componentType: TextMeshProUGUI
+    target: {fileID: 955416782449544720}
+  - key: LeftBtn
+    componentType: GameObject
+    target: {fileID: 1565515131299081673}
+  - key: LeftBtn
+    componentType: Button
+    target: {fileID: 1565515131299081673}
+  - key: LeftBtn
+    componentType: Image
+    target: {fileID: 1565515131299081673}
+  - key: RightBtn
+    componentType: GameObject
+    target: {fileID: 4791511303989202067}
+  - key: RightBtn
+    componentType: Button
+    target: {fileID: 4791511303989202067}
+  - key: RightBtn
+    componentType: Image
+    target: {fileID: 4791511303989202067}
 --- !u!114 &7001779328788650843
 MonoBehaviour:
   m_ObjectHideFlags: 0

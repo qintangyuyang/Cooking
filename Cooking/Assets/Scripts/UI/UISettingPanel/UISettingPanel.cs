@@ -94,6 +94,57 @@ namespace Cooking.UI
 
             var itemName = GeneralSettingDataList[index];
             var item = list.NewListViewItem(itemName);
+            UIBinder _itemUIBinder;
+            _itemUIBinder = item.transform.GetComponent<UIBinder>();
+            switch (index)
+            {
+                case 0:
+                    var Text0 = _itemUIBinder.GetText("Text");
+                    Text0.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_6");//音量
+                    break;
+                case 1:
+                    var DecText1 = _itemUIBinder.GetText("DecText");
+                    DecText1.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_7");//音乐
+                    Slider slider1 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider1.onValueChanged.AddListener((value) =>
+                    {
+                        print("音乐音量改变："+value);
+                    });
+                    break;
+                case 2:
+                    var DecText2 = _itemUIBinder.GetText("DecText");
+                    DecText2.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_8");//环境音
+                    Slider slider2 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider2.onValueChanged.AddListener((value) =>
+                    {
+                        print("环境音量改变："+value);
+                    });
+                    break;
+                case 3:
+                    var DecText3 = _itemUIBinder.GetText("DecText");
+                    DecText3.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_9");//音效
+                    Slider slider3 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider3.onValueChanged.AddListener((value) =>
+                    {
+                        print("音效音量改变："+value);
+                    });
+                    break;
+                case 4:
+                    var DecText4 = _itemUIBinder.GetText("DecText");
+                    DecText4.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_10");//白噪音
+                    Slider slider4 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider4.onValueChanged.AddListener((value) =>
+                    {
+                        print("白噪音音量改变："+value);
+                    });
+                    break;
+                case 5:
+                    var Text5 = _itemUIBinder.GetText("Text");
+                    Text5.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//窗口分辨率
+                    break;
+                case 6:
+                    break;
+            }
             return item;
         }
 

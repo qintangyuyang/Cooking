@@ -50,6 +50,11 @@ namespace Cooking.UI
 
         private const string GeneralCfgName = "GeneralSettingCfg";
 
+        private GameObject _GeneralBtnSelectTitle;
+        private GameObject _KeyBtnSelectTitle;
+        private GameObject _TutorialBtnSelectTitle;
+        private GameObject _OtherBtnSelectTitle;
+
         public override void Init()
         {
             _UIBinder = this.transform.GetComponent<UIBinder>();
@@ -63,26 +68,42 @@ namespace Cooking.UI
                 _OtherBtn = _UIBinder.GetButton("OtherBtn");
                 _PagePanelGeneralList = _UIBinder.GetGameObject("PagePanelGeneralList").GetComponent<LoopListView2>();
 
+                _GeneralBtnSelectTitle = _GeneralBtn.transform.Find("Selected").gameObject;
+                _KeyBtnSelectTitle = _KeyBtn.transform.Find("Selected").gameObject;
+                _TutorialBtnSelectTitle = _TutorialBtn.transform.Find("Selected").gameObject;
+                _OtherBtnSelectTitle = _OtherBtn.transform.Find("Selected").gameObject;
+                
+                //禁用Button自带的颜色动画
+                _GeneralBtn.transition = Selectable.Transition.None;
+                _KeyBtn.transition = Selectable.Transition.None;
+                _TutorialBtn.transition = Selectable.Transition.None;
+                _OtherBtn.transition = Selectable.Transition.None;
+
                 //事件监听
                 _OutButton.onClick.AddListener(OnClickOutButton);
-                _GeneralBtn.onClick.AddListener(OnClickGeneralBtn);
-                _KeyBtn.onClick.AddListener(OnClickKeyBtn);
-                _TutorialBtn.onClick.AddListener(OnClickTutorialBtn);
-                _OtherBtn.onClick.AddListener(OnClickOtherBtn);
+                _GeneralBtn.onClick.AddListener(() => OnClickTab(BtnType.General));
+                _KeyBtn.onClick.AddListener(() => OnClickTab(BtnType.Key));
+                _TutorialBtn.onClick.AddListener(() => OnClickTab(BtnType.Tutorial));
+                _OtherBtn.onClick.AddListener(() => OnClickTab(BtnType.Other));
 
-                string path = Application.streamingAssetsPath + "/Config/GameSetting/" + GeneralCfgName + ".json";
-                var jsonString=File.ReadAllText(path);
-                GeneralSettingDataList = JsonMapper.ToObject<List<string>>(jsonString);
-                
-                _PagePanelGeneralList.InitListView(GeneralSettingDataList.Count, InitPagePanelGeneralList);
+                LoadGeneralSettingConfig();
             }
 
             RefreshBtnType(BtnType.General);
         }
 
+        private void LoadGeneralSettingConfig()
+        {
+            GeneralSettingDataList = JsonManager.Instance.LoadData<List<string>>("Config/GameSetting/" + GeneralCfgName);
+            _PagePanelGeneralList.InitListView(GeneralSettingDataList.Count, InitPagePanelGeneralList);
+        }
+        
         private void RefreshBtnType(BtnType type)
         {
-
+            _GeneralBtnSelectTitle.SetActive(type == BtnType.General);
+            _KeyBtnSelectTitle.SetActive(type == BtnType.Key);
+            _TutorialBtnSelectTitle.SetActive(type == BtnType.Tutorial);
+            _OtherBtnSelectTitle.SetActive(type == BtnType.Other);
         }
 
         private LoopListViewItem2 InitPagePanelGeneralList(LoopListView2 list, int index)
@@ -130,19 +151,29 @@ namespace Cooking.UI
                     });
                     break;
                 case 4:
-                    var DecText4 = _itemUIBinder.GetText("DecText");
-                    DecText4.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_10");//白噪音
-                    Slider slider4 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
-                    slider4.onValueChanged.AddListener((value) =>
-                    {
-                        print("白噪音音量改变："+value);
-                    });
+                    var Text5 = _itemUIBinder.GetText("Text");
+                    Text5.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_10");//窗口分辨率
                     break;
                 case 5:
-                    var Text5 = _itemUIBinder.GetText("Text");
-                    Text5.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//窗口分辨率
+                    
                     break;
                 case 6:
+                    var Text6 = _itemUIBinder.GetText("Text");
+                    Text6.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_15");//语言
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    var Text8 = _itemUIBinder.GetText("Text");
+                    Text8.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_16");//文本速度
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    var Text10 = _itemUIBinder.GetText("Text");
+                    Text10.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_20");//是否开启提示
+                    break;
+                case 11:
                     break;
             }
             return item;
@@ -153,54 +184,22 @@ namespace Cooking.UI
             UIManager.Instance.CloseUI<UISettingPanel>();
         }
 
-        private void OnClickGeneralBtn()
+        private void OnClickTab(BtnType type)
         {
-            Debug.LogError("点击通用设置按钮");
-            if (CurrentBtnType != BtnType.General)
-            {
-                CurrentBtnType = BtnType.General;
-                RefreshBtnType(CurrentBtnType);
-            }
-        }
-
-        private void OnClickKeyBtn()
-        {
-            Debug.LogError("点击键位设置按钮");
-            if (CurrentBtnType != BtnType.Key)
-            {
-                CurrentBtnType = BtnType.Key;
-                RefreshBtnType(CurrentBtnType);
-            }
-        }
-
-        private void OnClickTutorialBtn()
-        {
-            Debug.LogError("点击教程按钮");
-            if (CurrentBtnType != BtnType.Tutorial)
-            {
-                CurrentBtnType = BtnType.Tutorial;
-                RefreshBtnType(CurrentBtnType);
-            }
-        }
-
-        private void OnClickOtherBtn()
-        {
-            Debug.LogError("点击其他按钮");
-            if (CurrentBtnType != BtnType.Other)
-            {
-                CurrentBtnType = BtnType.Other;
-                RefreshBtnType(CurrentBtnType);
-            }
+            if (CurrentBtnType == type)
+                return;
+            CurrentBtnType = type;
+            RefreshBtnType(type);
         }
 
         public override void OnClose()
         {
             base.OnClose();
             _OutButton.onClick.RemoveListener(OnClickOutButton);
-            _GeneralBtn.onClick.RemoveListener(OnClickGeneralBtn);
-            _KeyBtn.onClick.RemoveListener(OnClickKeyBtn);
-            _TutorialBtn.onClick.RemoveListener(OnClickTutorialBtn);
-            _OtherBtn.onClick.RemoveListener(OnClickOtherBtn);
+            _GeneralBtn.onClick.RemoveAllListeners();
+            _KeyBtn.onClick.RemoveAllListeners();
+            _TutorialBtn.onClick.RemoveAllListeners();
+            _OtherBtn.onClick.RemoveAllListeners();
         }
     }
 }

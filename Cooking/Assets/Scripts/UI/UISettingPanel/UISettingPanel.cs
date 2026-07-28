@@ -41,6 +41,8 @@ namespace Cooking.UI
         /// <summary>通用设置界面列表</summary>
         private LoopListView2 _PagePanelGeneralList;
 
+        private LoopListView2 _PagePanelOtherList;
+
         private UIBinder _UIBinder;
 
         private BtnType CurrentBtnType = BtnType.General;
@@ -48,12 +50,18 @@ namespace Cooking.UI
         /// <summary>装通用设置配置表里的预制名字</summary>
         private List<string> GeneralSettingDataList = new List<string>();
 
+        /// <summary>装其他设置配置表里的预制名字和多语言</summary>
+        private List<List<string>> OtherSettingDataList = new List<List<string>>();
+
         private const string GeneralCfgName = "GeneralSettingCfg";
+        private const string OtherCfgName = "OtherSettingCfg";
 
         private GameObject _GeneralBtnSelectTitle;
         private GameObject _KeyBtnSelectTitle;
         private GameObject _TutorialBtnSelectTitle;
         private GameObject _OtherBtnSelectTitle;
+        
+        private bool isFirstOpen = true;
 
         public override void Init()
         {
@@ -67,6 +75,7 @@ namespace Cooking.UI
                 _TutorialBtn = _UIBinder.GetButton("TutorialBtn");
                 _OtherBtn = _UIBinder.GetButton("OtherBtn");
                 _PagePanelGeneralList = _UIBinder.GetGameObject("PagePanelGeneralList").GetComponent<LoopListView2>();
+                _PagePanelOtherList = _UIBinder.GetGameObject("PagePanelOtherList").GetComponent<LoopListView2>();
 
                 _GeneralBtnSelectTitle = _GeneralBtn.transform.Find("Selected").gameObject;
                 _KeyBtnSelectTitle = _KeyBtn.transform.Find("Selected").gameObject;
@@ -87,15 +96,24 @@ namespace Cooking.UI
                 _OtherBtn.onClick.AddListener(() => OnClickTab(BtnType.Other));
 
                 LoadGeneralSettingConfig();
+                LoadOtherSettingConfig();
             }
 
             RefreshBtnType(BtnType.General);
         }
 
+        //加载通用设置界面json数据
         private void LoadGeneralSettingConfig()
         {
             GeneralSettingDataList = JsonManager.Instance.LoadData<List<string>>("Config/GameSetting/" + GeneralCfgName);
             _PagePanelGeneralList.InitListView(GeneralSettingDataList.Count, InitPagePanelGeneralList);
+        }
+        
+        //加载其他设置界面json数据
+        private void LoadOtherSettingConfig()
+        {
+            OtherSettingDataList = JsonManager.Instance.LoadData<List<List<string>>>("Config/GameSetting/" + OtherCfgName);
+            _PagePanelOtherList.InitListView(OtherSettingDataList.Count, InitPagePanelOtherList);
         }
         
         private void RefreshBtnType(BtnType type)
@@ -104,6 +122,26 @@ namespace Cooking.UI
             _KeyBtnSelectTitle.SetActive(type == BtnType.Key);
             _TutorialBtnSelectTitle.SetActive(type == BtnType.Tutorial);
             _OtherBtnSelectTitle.SetActive(type == BtnType.Other);
+
+            _PagePanelGeneralList.gameObject.SetActive(type == BtnType.General);
+            _PagePanelOtherList.gameObject.SetActive(type == BtnType.Other);
+            
+            if (type == BtnType.General)
+            {
+                _PagePanelGeneralList.RefreshAllShownItem();
+            }
+            else if (type == BtnType.Key)
+            {
+                
+            }
+            else if (type == BtnType.Tutorial)
+            {
+                
+            }
+            else if (type == BtnType.Other)
+            {
+                _PagePanelOtherList.RefreshAllShownItem();
+            }
         }
 
         private LoopListViewItem2 InitPagePanelGeneralList(LoopListView2 list, int index)
@@ -176,6 +214,21 @@ namespace Cooking.UI
                 case 11:
                     break;
             }
+            return item;
+        }
+
+        private LoopListViewItem2 InitPagePanelOtherList(LoopListView2 list, int index)
+        {
+            if (index < 0 || index >= OtherSettingDataList.Count)
+                return null;
+            var itemName = OtherSettingDataList[index][0];
+            var item = list.NewListViewItem(itemName);
+            UIBinder _itemUIBinder;
+            _itemUIBinder = item.transform.GetComponent<UIBinder>();
+            var Text = _itemUIBinder.GetText("Text");
+            var contentText = OtherSettingDataList[index][1];
+            Text.text = LanguageManager.Instance.GetText(contentText);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(item.CachedRectTransform);
             return item;
         }
 

@@ -1,8 +1,8 @@
 [
   ["ItemText","COMMON_TEXT_KEY_23"],
-  ["ItemContentText",""],
+  ["ItemContentText","COMMON_TEXT_KEY_32"],
   ["ItemText","COMMON_TEXT_KEY_24"],
-  ["ItemContentText",""],
+  ["ItemContentText","COMMON_TEXT_KEY_33"],
   ["ItemText","COMMON_TEXT_KEY_25"],
-  ["ItemContentText",""]
+  ["ItemContentText","COMMON_TEXT_KEY_34"]
 ]

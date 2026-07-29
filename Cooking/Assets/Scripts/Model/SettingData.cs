@@ -10,9 +10,14 @@ namespace Cooking.Model
     public class SettingData
     {
         /// <summary>
-        /// 主音量
+        /// 音乐
         /// </summary>
         public float masterVolume = 1f;
+
+        /// <summary>
+        /// 环境音
+        /// </summary>
+        public float AmbientSound = 1f;
         
         /// <summary>
         /// 音效音量
@@ -33,5 +38,15 @@ namespace Cooking.Model
         /// 语言
         /// </summary>
         public LanguageType language = LanguageType.Chinese;
+
+        /// <summary>
+        /// 文本速度
+        /// </summary>
+        public int TextSpeed = 1;
+
+        /// <summary>
+        /// 是否开启提示
+        /// </summary>
+        public bool IsOpenTip = false;
     }
 }

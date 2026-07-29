@@ -10,12 +10,12 @@ namespace Cooking.Model
     public class SettingData
     {
         /// <summary>
-        /// 音乐
+        /// 音乐音量
         /// </summary>
         public float masterVolume = 1f;
 
         /// <summary>
-        /// 环境音
+        /// 环境音量
         /// </summary>
         public float AmbientSound = 1f;
         

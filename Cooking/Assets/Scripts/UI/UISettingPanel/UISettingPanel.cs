@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Cooking.Manager;
+using Cooking.Model;
 using Cooking.UI;
 using LitJson;
 using SuperScrollView;
@@ -63,8 +64,12 @@ namespace Cooking.UI
         
         private bool isFirstOpen = true;
 
+        /// <summary>玩家设置界面数据</summary>
+        private SettingData _SettingData;
+
         public override void Init()
         {
+            _SettingData = PlayerDataManager.Instance.GetSettingData();
             _UIBinder = this.transform.GetComponent<UIBinder>();
             if (_UIBinder != null)
             {
@@ -98,7 +103,7 @@ namespace Cooking.UI
                 LoadGeneralSettingConfig();
                 LoadOtherSettingConfig();
             }
-
+            
             RefreshBtnType(BtnType.General);
         }
 
@@ -163,28 +168,40 @@ namespace Cooking.UI
                     break;
                 case 1:
                     var DecText1 = _itemUIBinder.GetText("DecText");
+                    var NumText1 = _itemUIBinder.GetText("NumText");
                     DecText1.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_7");//音乐
                     Slider slider1 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider1.value = _SettingData.masterVolume;
+                    NumText1.text = slider1.value.ToString("P0");
                     slider1.onValueChanged.AddListener((value) =>
                     {
+                        NumText1.text = value.ToString("P0");
                         print("音乐音量改变："+value);
                     });
                     break;
                 case 2:
                     var DecText2 = _itemUIBinder.GetText("DecText");
+                    var NumText2 = _itemUIBinder.GetText("NumText");
                     DecText2.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_8");//环境音
                     Slider slider2 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider2.value = _SettingData.AmbientSound;
+                    NumText2.text = slider2.value.ToString("P0");
                     slider2.onValueChanged.AddListener((value) =>
                     {
+                        NumText2.text = value.ToString("P0");
                         print("环境音量改变："+value);
                     });
                     break;
                 case 3:
                     var DecText3 = _itemUIBinder.GetText("DecText");
+                    var NumText3 = _itemUIBinder.GetText("NumText");
                     DecText3.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_9");//音效
                     Slider slider3 = _itemUIBinder.GetGameObject("Slider").GetComponent<Slider>();
+                    slider3.value = _SettingData.sfxVolume;
+                    NumText3.text = slider3.value.ToString("P0");
                     slider3.onValueChanged.AddListener((value) =>
                     {
+                        NumText3.text = value.ToString("P0");
                         print("音效音量改变："+value);
                     });
                     break;

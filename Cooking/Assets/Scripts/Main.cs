@@ -18,6 +18,7 @@ namespace Cooking
         {
             LanguageManager.Instance.Initialize();
             PlayerDataManager.Instance.LoadAllPlayerData();
+            AudioManager.Instance.PlaBGM(Resources.Load<AudioClip>("AudioSource/BGM"));
             UIManager.Instance.OpenUI<UIStartPanel>();
         }
 

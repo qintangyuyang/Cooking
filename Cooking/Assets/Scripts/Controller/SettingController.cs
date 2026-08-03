@@ -1,6 +1,7 @@
 using Cooking.Manager;
 using Cooking.Model;
 using UnityEngine;
+using EventType = Cooking.Manager.EventType;
 
 namespace Cooking.Controller
 {
@@ -43,6 +44,7 @@ namespace Cooking.Controller
         {
             value = Mathf.Clamp01(value);
             Data.masterVolume = value;
+            EventManager.TriggerEvent(EventType.SettingChanged);
         }
         
         /// <summary>设置环境音</summary>

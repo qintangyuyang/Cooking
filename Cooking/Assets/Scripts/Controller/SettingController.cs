@@ -52,6 +52,7 @@ namespace Cooking.Controller
         {
             value = Mathf.Clamp01(value);
             Data.AmbientSound = value;
+            EventManager.TriggerEvent(EventType.SettingChanged);
         }
         
         /// <summary>设置音效音量</summary>
@@ -59,6 +60,7 @@ namespace Cooking.Controller
         {
             value = Mathf.Clamp01(value);
             Data.sfxVolume = value;
+            EventManager.TriggerEvent(EventType.SettingChanged);
         }
         
         /// <summary>保存设置数据数据</summary>

@@ -45,10 +45,14 @@ namespace Cooking.Manager
         private AudioSource _bgmSource;
 
         /// <summary>
+        /// 环境音播放器，常驻
+        /// </summary>
+        private AudioSource _ambientSource;
+
+        /// <summary>
         /// SFX播放器池
         /// </summary>
         private List<AudioSource> _sfxSourcePool = new List<AudioSource>();
-
         private int _poolSize = 8;
         
         private SettingData _settingData;
@@ -72,15 +76,21 @@ namespace Cooking.Manager
             _settingData = PlayerDataManager.Instance.GetSettingData();
             
             //创建BGM播放器
-            _bgmSource = CreateAudioSource(gameObject);
+            _bgmSource = CreateAudioSource(gameObject,"BGM");
             _bgmSource.loop = true;
             _bgmSource.playOnAwake = false;
             _bgmSource.volume = _settingData.masterVolume;
             
+            //环境音播放器
+            _ambientSource = CreateAudioSource(gameObject,"Ambient");
+            _ambientSource.loop = true;
+            _ambientSource.playOnAwake = false;
+            _ambientSource.volume = _settingData.AmbientSound;
+            
             //创建SFX播放器池
             for (int i = 0; i < _poolSize; i++)
             {
-                var src = CreateAudioSource(gameObject);
+                var src = CreateAudioSource(gameObject, "SFX_" + i);
                 src.loop = false;
                 src.playOnAwake = false;
                 _sfxSourcePool.Add(src);
@@ -89,9 +99,9 @@ namespace Cooking.Manager
             EventManager.RegisterEvent(EventType.SettingChanged, (Action)OnSettingChanged);
         }
 
-        private AudioSource CreateAudioSource(GameObject parent)
+        private AudioSource CreateAudioSource(GameObject parent,string name)
         {
-            var go = new GameObject("AudioSource");
+            var go = new GameObject(name);
             go.transform.SetParent(parent.transform);
             return go.AddComponent<AudioSource>();
         }
@@ -102,8 +112,17 @@ namespace Cooking.Manager
         /// <param name="clip"></param>
         public void PlaBGM(AudioClip clip)
         {
+            if(_bgmSource == null)
+                return;
             _bgmSource.clip = clip;
             _bgmSource.Play();
+        }
+
+        public void PlayAmbientSound(AudioClip clip)
+        {
+            if (clip == null) return;
+            _ambientSource.clip = clip;
+            _ambientSource.Play();
         }
         
         /// <summary>
@@ -134,6 +153,7 @@ namespace Cooking.Manager
         public void ApplyVolumes()
         {
             _bgmSource.volume = _settingData.masterVolume;
+            _ambientSource.volume = _settingData.AmbientSound;
             foreach (var src in _sfxSourcePool)
             {
                 if (src.isPlaying)

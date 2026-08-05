@@ -14,10 +14,12 @@ namespace Cooking.UI
     {
         public virtual void OnOpen(object param = null)
         {
+            AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/Open_Set"));
         }
 
         public virtual void OnClose()
         {
+            AudioManager.Instance.PlaySFX(Resources.Load<AudioClip>("AudioSource/Close_Set"));
         }
 
         public virtual void OnPause()

@@ -21,6 +21,12 @@ namespace Cooking.Controller
 
         private SettingData Data => PlayerDataManager.Instance.GetSettingData();
 
+        /// <summary>获取窗口分辨率</summary>
+        public string GetResolutionWidthHeight()
+        {
+            return Data.resolutionWidth + "x" + Data.resolutionHeight;
+        }
+
         /// <summary>读取音乐音量</summary>
         public float GetMasterVolume()
         {
@@ -37,6 +43,18 @@ namespace Cooking.Controller
         public float GetSfxVolume()
         {
             return Data.sfxVolume;
+        }
+
+        /// <summary>设置窗口分辨率</summary>
+        public void SetResolutionWidthHeight(string widthHeight)
+        {
+            var parts = widthHeight.Split('x');
+            if (parts.Length == 2 && int.TryParse(parts[0], out int width) && int.TryParse(parts[1], out int height))
+            {
+                Data.resolutionWidth = width;
+                Data.resolutionHeight = height;
+                ApplyResolution();
+            }
         }
 
         /// <summary>设置音乐音量</summary>
@@ -62,7 +80,19 @@ namespace Cooking.Controller
             Data.sfxVolume = value;
             EventManager.TriggerEvent(EventType.SettingChanged);
         }
-        
+
+        /// <summary>将存档中的分辨率设置应用到游戏中</summary>
+        public void ApplyResolution()
+        {
+            int width = Data.resolutionWidth;
+            int height = Data.resolutionHeight;
+            if (width <= 0 || height <= 0)
+                return;
+
+            //保持玩家当前的全屏/窗口模式不变，只改分辨率
+            Screen.SetResolution(width, height, Screen.fullScreenMode);
+        }
+
         /// <summary>保存设置数据数据</summary>
         public void SaveSetting()
         {

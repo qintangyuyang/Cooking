@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cooking.Manager;
 using Cooking.UI;
 using UnityEngine;
+using Cooking.Controller;
 
 namespace Cooking
 {
@@ -18,6 +19,7 @@ namespace Cooking
         {
             LanguageManager.Instance.Initialize();
             PlayerDataManager.Instance.LoadAllPlayerData();
+            SettingController.Instance.ApplyResolution();
             AudioManager.Instance.PlaBGM(Resources.Load<AudioClip>("AudioSource/BGM"));
             AudioManager.Instance.PlayAmbientSound(Resources.Load<AudioClip>("AudioSource/AmbientSound_Forest_Loop"));
             UIManager.Instance.OpenUI<UIStartPanel>();

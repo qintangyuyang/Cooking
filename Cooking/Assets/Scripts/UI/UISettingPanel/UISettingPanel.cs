@@ -54,10 +54,17 @@ namespace Cooking.UI
         private const string GeneralCfgName = "GeneralSettingCfg";
         private const string OtherCfgName = "OtherSettingCfg";
 
+        // 四个选中页面预制
         private GameObject _GeneralBtnSelectTitle;
         private GameObject _KeyBtnSelectTitle;
         private GameObject _TutorialBtnSelectTitle;
         private GameObject _OtherBtnSelectTitle;
+
+        private List<List<string>> _ResolutionWidthHeight = new List<List<string>>()
+        {
+            new List<string>(){"1920x1080","COMMON_TEXT_KEY_26"},
+            new List<string>(){"1280x720","COMMON_TEXT_KEY_27"},
+        };
         
 
         public override void Init()
@@ -205,7 +212,48 @@ namespace Cooking.UI
                     Text5.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_10");//窗口分辨率
                     break;
                 case 5:
-                    
+                    var WindowContent = _itemUIBinder.GetText("WindowContent");
+                    var LeftBtn5= _itemUIBinder.GetButton("LeftBtn");
+                    var RightBtn5 = _itemUIBinder.GetButton("RightBtn");
+                    var ResolutionWidthHeightListCount = _ResolutionWidthHeight.Count;
+                    var CurrentResolution = SettingController.Instance.GetResolutionWidthHeight();
+                    //当前分辨率在列表中的索引
+                    var CurrentResolutionIndex = _ResolutionWidthHeight.FindIndex(x => x[0] == CurrentResolution);
+                    if (CurrentResolutionIndex < 0)
+                    {
+                        CurrentResolutionIndex = 0;
+                        WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                    }
+                    LeftBtn5.onClick.RemoveAllListeners();
+                    LeftBtn5.onClick.AddListener(() =>
+                    {
+                        CurrentResolutionIndex--;
+                        if (CurrentResolutionIndex >= 0)
+                        {
+                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                        }
+                        else if (CurrentResolutionIndex < 0)
+                        {
+                            CurrentResolutionIndex = ResolutionWidthHeightListCount - 1;
+                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                        }
+                        SettingController.Instance.SetResolutionWidthHeight(_ResolutionWidthHeight[CurrentResolutionIndex][0]);
+                    });
+                    RightBtn5.onClick.RemoveAllListeners();
+                    RightBtn5.onClick.AddListener(() =>
+                    {
+                        CurrentResolutionIndex++;
+                        if (CurrentResolutionIndex < ResolutionWidthHeightListCount)
+                        {
+                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                        }
+                        else if (CurrentResolutionIndex >= ResolutionWidthHeightListCount)
+                        {
+                            CurrentResolutionIndex = 0;
+                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                        }
+                        SettingController.Instance.SetResolutionWidthHeight(_ResolutionWidthHeight[CurrentResolutionIndex][0]);
+                    });
                     break;
                 case 6:
                     var Text6 = _itemUIBinder.GetText("Text");

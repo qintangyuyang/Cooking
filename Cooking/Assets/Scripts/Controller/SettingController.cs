@@ -17,7 +17,7 @@ namespace Cooking.Controller
                 return _instance;
             }
         }
-        private SettingController(){}
+        private SettingController() { }
 
         private SettingData Data => PlayerDataManager.Instance.GetSettingData();
 
@@ -64,7 +64,7 @@ namespace Cooking.Controller
             Data.masterVolume = value;
             EventManager.TriggerEvent(EventType.SettingChanged);
         }
-        
+
         /// <summary>设置环境音</summary>
         public void SetAmbientSound(float value)
         {
@@ -72,7 +72,7 @@ namespace Cooking.Controller
             Data.AmbientSound = value;
             EventManager.TriggerEvent(EventType.SettingChanged);
         }
-        
+
         /// <summary>设置音效音量</summary>
         public void SetSfxVolume(float value)
         {

@@ -5,6 +5,7 @@ using Cooking.Manager;
 using Cooking.UI;
 using UnityEngine;
 using Cooking.Controller;
+using Cysharp.Threading.Tasks;
 
 namespace Cooking
 {
@@ -22,7 +23,12 @@ namespace Cooking
             SettingController.Instance.ApplyResolution();
             AudioManager.Instance.PlaBGM(Resources.Load<AudioClip>("AudioSource/BGM"));
             AudioManager.Instance.PlayAmbientSound(Resources.Load<AudioClip>("AudioSource/AmbientSound_Forest_Loop"));
-            UIManager.Instance.OpenUI<UIStartPanel>();
+            OpenUI().Forget();
+        }
+
+        public async UniTask OpenUI()
+        {
+            await UIManager.Instance.OpenUI<UIStartPanel>();
         }
 
         private void OnApplicationQuit()

@@ -123,7 +123,7 @@ namespace Cooking.Manager
 
         public void SwitchLanguage(LanguageType language)
         {
-            if(language==currentLanguage) return;
+            if (language == currentLanguage) return;
             LoadLanguage(language);
 
             if (currentLanguage == language)
@@ -132,6 +132,7 @@ namespace Cooking.Manager
                 SavePreference(language);
             }
         }
+        
 
         //语言偏好保存本地实现持久化
         private void SavePreference(LanguageType language)
@@ -166,6 +167,24 @@ namespace Cooking.Manager
             }
 
             return defaultLanguage;
-        } 
+        }
+
+        /// <summary>
+        /// 获取当前语言类型
+        /// </summary>
+        /// <returns></returns>
+        public LanguageType GetCurrentLanguage()
+        {
+            return currentLanguage;
+        }
+
+        /// <summary>
+        /// 获取所有语言代码
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<LanguageType, string> GetAllLanguageCodes()
+        {
+            return new Dictionary<LanguageType, string>(LanguageCodeMap);
+        }
     }
 }

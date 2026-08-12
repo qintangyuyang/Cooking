@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Cooking.Controller;
 using Cooking.Manager;
+using Cooking.Model;
 using SuperScrollView;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,18 +63,55 @@ namespace Cooking.UI
         private GameObject _TutorialBtnSelectTitle;
         private GameObject _OtherBtnSelectTitle;
 
+        //按钮的文本(选中和未选择两个文本)
+        private TextMeshProUGUI _GeneralBtnUnSelected;
+        private TextMeshProUGUI _GeneralBtnSelected;
+        private TextMeshProUGUI _KeyBtnUnSelected;
+        private TextMeshProUGUI _KeyBtnSelected;
+        private TextMeshProUGUI _TutorialBtnUnSelected;
+        private TextMeshProUGUI _TutorialBtnSelected;
+        private TextMeshProUGUI _OtherBtnUnSelected;
+        private TextMeshProUGUI _OtherBtnSelected;
+
+        /// <summary>当前支持的分辨率</summary>
         private List<List<string>> _ResolutionWidthHeight = new List<List<string>>()
         {
             new List<string>(){"1920x1080","COMMON_TEXT_KEY_26"},
             new List<string>(){"1280x720","COMMON_TEXT_KEY_27"},
         };
-        
+
+        /// <summary>当前拥有的所有多语言</summary>
+        private Dictionary<LanguageType, string> _CurrentLanguageCodeMap = new Dictionary<LanguageType, string>();
+
+        /// <summary>多语言类型加多语言文本的结构体</summary>
+        struct LanguageTypeCode
+        {
+            public LanguageType languageType;
+            public string languageString;
+        }
+
+        /// <summary>多语言类型加多语言文本的列表</summary>
+        private List<LanguageTypeCode> _CurrentLanguageCodeList = new List<LanguageTypeCode>();
 
         public override void Init()
         {
             _UIBinder = this.transform.GetComponent<UIBinder>();
             if (_UIBinder != null)
             {
+                //将多语言代码和多语言文本装进列表里，方便后续使用
+                _CurrentLanguageCodeMap = LanguageManager.Instance.GetAllLanguageCodes();
+                _CurrentLanguageCodeList.Clear();
+                foreach (var item in _CurrentLanguageCodeMap)
+                {
+                    _CurrentLanguageCodeList.Add(new LanguageTypeCode()
+                    {
+                        languageType = item.Key,
+                        languageString = "COMMON_TEXT_KEY_" + item.Value
+                    });
+                }
+
+
+
                 //组件绑定
                 _OutButton = _UIBinder.GetButton("OutButton");
                 _GeneralBtn = _UIBinder.GetButton("GeneralBtn");
@@ -81,11 +121,29 @@ namespace Cooking.UI
                 _PagePanelGeneralList = _UIBinder.GetGameObject("PagePanelGeneralList").GetComponent<LoopListView2>();
                 _PagePanelOtherList = _UIBinder.GetGameObject("PagePanelOtherList").GetComponent<LoopListView2>();
 
+                //按钮的多语言绑定
+                _GeneralBtnUnSelected = _GeneralBtn.transform.Find("UnSelected").GetComponent<TextMeshProUGUI>();
+                _GeneralBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//通用设置
+                _GeneralBtnSelected = _GeneralBtn.transform.Find("Selected").GetComponent<TextMeshProUGUI>();
+                _GeneralBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//通用设置
+                _KeyBtnUnSelected = _KeyBtn.transform.Find("UnSelected").GetComponent<TextMeshProUGUI>();
+                _KeyBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_12");//键位设置
+                _KeyBtnSelected = _KeyBtn.transform.Find("Selected").GetComponent<TextMeshProUGUI>();
+                _KeyBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_12");//键位设置
+                _TutorialBtnUnSelected = _TutorialBtn.transform.Find("UnSelected").GetComponent<TextMeshProUGUI>();
+                _TutorialBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_13");//教程
+                _TutorialBtnSelected = _TutorialBtn.transform.Find("Selected").GetComponent<TextMeshProUGUI>();
+                _TutorialBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_13");//教程
+                _OtherBtnUnSelected = _OtherBtn.transform.Find("UnSelected").GetComponent<TextMeshProUGUI>();
+                _OtherBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_14");//其他
+                _OtherBtnSelected = _OtherBtn.transform.Find("Selected").GetComponent<TextMeshProUGUI>();
+                _OtherBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_14");//其他
+
                 _GeneralBtnSelectTitle = _GeneralBtn.transform.Find("Selected").gameObject;
                 _KeyBtnSelectTitle = _KeyBtn.transform.Find("Selected").gameObject;
                 _TutorialBtnSelectTitle = _TutorialBtn.transform.Find("Selected").gameObject;
                 _OtherBtnSelectTitle = _OtherBtn.transform.Find("Selected").gameObject;
-                
+
                 //禁用Button自带的颜色动画
                 _GeneralBtn.transition = Selectable.Transition.None;
                 _KeyBtn.transition = Selectable.Transition.None;
@@ -102,9 +160,30 @@ namespace Cooking.UI
                 LoadGeneralSettingConfig();
                 LoadOtherSettingConfig();
             }
-            
+
             RefreshBtnType(BtnType.General);
+
         }
+
+        private void RefreshText()
+        {
+            _GeneralBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//通用设置
+            _GeneralBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_11");//通用设置
+            _KeyBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_12");//键位设置
+            _KeyBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_12");//键位设置
+            _TutorialBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_13");//教程
+            _TutorialBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_13");//教程
+            _OtherBtnUnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_14");//其他
+            _OtherBtnSelected.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_14");//其他
+        }
+
+        protected override void OnLanguageChanged()
+        {
+            RefreshText();
+            _PagePanelGeneralList.RefreshAllShownItem();
+            _PagePanelOtherList.RefreshAllShownItem();
+        }
+
 
         //加载通用设置界面json数据
         private void LoadGeneralSettingConfig()
@@ -112,14 +191,14 @@ namespace Cooking.UI
             GeneralSettingDataList = JsonManager.Instance.LoadData<List<string>>("Config/GameSetting/" + GeneralCfgName);
             _PagePanelGeneralList.InitListView(GeneralSettingDataList.Count, InitPagePanelGeneralList);
         }
-        
+
         //加载其他设置界面json数据
         private void LoadOtherSettingConfig()
         {
             OtherSettingDataList = JsonManager.Instance.LoadData<List<List<string>>>("Config/GameSetting/" + OtherCfgName);
             _PagePanelOtherList.InitListView(OtherSettingDataList.Count, InitPagePanelOtherList);
         }
-        
+
         private void RefreshBtnType(BtnType type)
         {
             _GeneralBtnSelectTitle.SetActive(type == BtnType.General);
@@ -129,18 +208,18 @@ namespace Cooking.UI
 
             _PagePanelGeneralList.gameObject.SetActive(type == BtnType.General);
             _PagePanelOtherList.gameObject.SetActive(type == BtnType.Other);
-            
+
             if (type == BtnType.General)
             {
                 _PagePanelGeneralList.RefreshAllShownItem();
             }
             else if (type == BtnType.Key)
             {
-                
+
             }
             else if (type == BtnType.Tutorial)
             {
-                
+
             }
             else if (type == BtnType.Other)
             {
@@ -212,8 +291,8 @@ namespace Cooking.UI
                     Text5.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_10");//窗口分辨率
                     break;
                 case 5:
-                    var WindowContent = _itemUIBinder.GetText("WindowContent");
-                    var LeftBtn5= _itemUIBinder.GetButton("LeftBtn");
+                    var WindowContent5 = _itemUIBinder.GetText("WindowContent");
+                    var LeftBtn5 = _itemUIBinder.GetButton("LeftBtn");
                     var RightBtn5 = _itemUIBinder.GetButton("RightBtn");
                     var ResolutionWidthHeightListCount = _ResolutionWidthHeight.Count;
                     var CurrentResolution = SettingController.Instance.GetResolutionWidthHeight();
@@ -222,20 +301,20 @@ namespace Cooking.UI
                     if (CurrentResolutionIndex < 0)
                     {
                         CurrentResolutionIndex = 0;
-                        WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                     }
+                    WindowContent5.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                     LeftBtn5.onClick.RemoveAllListeners();
                     LeftBtn5.onClick.AddListener(() =>
                     {
                         CurrentResolutionIndex--;
                         if (CurrentResolutionIndex >= 0)
                         {
-                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                            WindowContent5.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                         }
                         else if (CurrentResolutionIndex < 0)
                         {
                             CurrentResolutionIndex = ResolutionWidthHeightListCount - 1;
-                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                            WindowContent5.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                         }
                         SettingController.Instance.SetResolutionWidthHeight(_ResolutionWidthHeight[CurrentResolutionIndex][0]);
                     });
@@ -245,12 +324,12 @@ namespace Cooking.UI
                         CurrentResolutionIndex++;
                         if (CurrentResolutionIndex < ResolutionWidthHeightListCount)
                         {
-                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                            WindowContent5.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                         }
                         else if (CurrentResolutionIndex >= ResolutionWidthHeightListCount)
                         {
                             CurrentResolutionIndex = 0;
-                            WindowContent.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
+                            WindowContent5.text = LanguageManager.Instance.GetText(_ResolutionWidthHeight[CurrentResolutionIndex][1]);
                         }
                         SettingController.Instance.SetResolutionWidthHeight(_ResolutionWidthHeight[CurrentResolutionIndex][0]);
                     });
@@ -260,6 +339,43 @@ namespace Cooking.UI
                     Text6.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_15");//语言
                     break;
                 case 7:
+                    var WindowContent7 = _itemUIBinder.GetText("WindowContent");
+                    var LeftBtn7 = _itemUIBinder.GetButton("LeftBtn");
+                    var RightBtn7 = _itemUIBinder.GetButton("RightBtn");
+                    var currentLanguage = LanguageManager.Instance.GetCurrentLanguage();
+                    WindowContent7.text = LanguageManager.Instance.GetText(_CurrentLanguageCodeList.Find(v => v.languageType == currentLanguage).languageString);
+                    //当前的多语言的列表索引
+                    var CurrentLanguageIndex = _CurrentLanguageCodeList.FindIndex(v => v.languageType == currentLanguage);
+                    LeftBtn7.onClick.RemoveAllListeners();
+                    LeftBtn7.onClick.AddListener(() =>
+                    {
+                        CurrentLanguageIndex--;
+                        if (CurrentLanguageIndex >= 0)
+                        {
+                            WindowContent7.text = LanguageManager.Instance.GetText(_CurrentLanguageCodeList[CurrentLanguageIndex].languageString);
+                        }
+                        else if (CurrentLanguageIndex < 0)
+                        {
+                            CurrentLanguageIndex = _CurrentLanguageCodeList.Count - 1;
+                            WindowContent7.text = LanguageManager.Instance.GetText(_CurrentLanguageCodeList[CurrentLanguageIndex].languageString);
+                        }
+                        LanguageManager.Instance.SwitchLanguage(_CurrentLanguageCodeList[CurrentLanguageIndex].languageType);
+                    });
+                    RightBtn7.onClick.RemoveAllListeners();
+                    RightBtn7.onClick.AddListener(() =>
+                    {
+                        CurrentLanguageIndex++;
+                        if (CurrentLanguageIndex < _CurrentLanguageCodeList.Count)
+                        {
+                            WindowContent7.text = LanguageManager.Instance.GetText(_CurrentLanguageCodeList[CurrentLanguageIndex].languageString);
+                        }
+                        else if (CurrentLanguageIndex >= _CurrentLanguageCodeList.Count)
+                        {
+                            CurrentLanguageIndex = 0;
+                            WindowContent7.text = LanguageManager.Instance.GetText(_CurrentLanguageCodeList[CurrentLanguageIndex].languageString);
+                        }
+                        LanguageManager.Instance.SwitchLanguage(_CurrentLanguageCodeList[CurrentLanguageIndex].languageType);
+                    });
                     break;
                 case 8:
                     var Text8 = _itemUIBinder.GetText("Text");
@@ -314,8 +430,9 @@ namespace Cooking.UI
             _KeyBtn.onClick.RemoveAllListeners();
             _TutorialBtn.onClick.RemoveAllListeners();
             _OtherBtn.onClick.RemoveAllListeners();
-            
+
             SettingController.Instance.SaveSetting();
         }
     }
+
 }

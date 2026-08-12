@@ -32,5 +32,7 @@
   "COMMON_TEXT_KEY_31": "1280x720 无边框窗口",
   "COMMON_TEXT_KEY_32": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
   "COMMON_TEXT_KEY_33": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n换行xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n换行xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n换行",
-  "COMMON_TEXT_KEY_34": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n换行"
+  "COMMON_TEXT_KEY_34": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n换行",
+  "COMMON_TEXT_KEY_zh-CN": "简体中文",
+  "COMMON_TEXT_KEY_en-US": "English"
 }

@@ -42,7 +42,7 @@ namespace Cooking.Model
         /// <summary>
         /// 文本速度
         /// </summary>
-        public int TextSpeed = 1;
+        public float TextSpeed = 1;
 
         /// <summary>
         /// 是否开启提示

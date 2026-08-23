@@ -21,6 +21,18 @@ namespace Cooking.Controller
 
         private SettingData Data => PlayerDataManager.Instance.GetSettingData();
 
+        /// <summary>获取文本速度</summary>
+        public float GetTextSpeed()
+        {
+            return Data.TextSpeed;
+        }
+
+        /// <summary>获取是否开启提示的boolean值</summary>
+        public bool GetIsOpenTip()
+        {
+            return Data.IsOpenTip;
+        }
+
         /// <summary>获取窗口分辨率</summary>
         public string GetResolutionWidthHeight()
         {
@@ -45,6 +57,13 @@ namespace Cooking.Controller
             return Data.sfxVolume;
         }
 
+        /// <summary>设置是否开启提示</summary>
+        public void SetIsOpenTip(bool isOpen)
+        {
+            Data.IsOpenTip = isOpen;
+            EventManager.TriggerEvent(EventType.SettingChanged);
+        }
+
         /// <summary>设置窗口分辨率</summary>
         public void SetResolutionWidthHeight(string widthHeight)
         {
@@ -55,6 +74,13 @@ namespace Cooking.Controller
                 Data.resolutionHeight = height;
                 ApplyResolution();
             }
+        }
+
+        /// <summary>设置文本速度</summary>
+        public void SetTextSpeed(float speed)
+        {
+            Data.TextSpeed = speed;
+            EventManager.TriggerEvent(EventType.SettingChanged);
         }
 
         /// <summary>设置音乐音量</summary>

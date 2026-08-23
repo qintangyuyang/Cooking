@@ -382,12 +382,102 @@ namespace Cooking.UI
                     Text8.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_16");//文本速度
                     break;
                 case 9:
+                    //文本速度切换
+                    var WindowContent9 = _itemUIBinder.GetText("WindowContent");
+                    var TextSpeed = SettingController.Instance.GetTextSpeed();
+                    if (TextSpeed == 0.5f)
+                    {
+                        WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_17");//慢
+                    }
+                    else if (TextSpeed == 1)
+                    {
+                        WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_18");//中
+                    }
+                    else if (TextSpeed == 1.5f)
+                    {
+                        WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_19");//快
+                    }
+                    var LeftBtn9 = _itemUIBinder.GetButton("LeftBtn");
+                    var RightBtn9 = _itemUIBinder.GetButton("RightBtn");
+                    LeftBtn9.onClick.RemoveAllListeners();
+                    RightBtn9.onClick.RemoveAllListeners();
+                    LeftBtn9.onClick.AddListener(() =>
+                    {
+                        if (TextSpeed == 0.5f)
+                        {
+                            TextSpeed = 1.5f;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_19");//快
+                        }
+                        else if (TextSpeed == 1)
+                        {
+                            TextSpeed = 0.5f;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_17");//慢
+                        }
+                        else if (TextSpeed == 1.5f)
+                        {
+                            TextSpeed = 1;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_18");//中
+                        }
+                        SettingController.Instance.SetTextSpeed(TextSpeed);
+                    });
+                    RightBtn9.onClick.AddListener(() =>
+                    {
+                        if (TextSpeed == 0.5f)
+                        {
+                            TextSpeed = 1;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_18");//中
+                        }
+                        else if (TextSpeed == 1)
+                        {
+                            TextSpeed = 1.5f;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_19");//快
+                        }
+                        else if (TextSpeed == 1.5f)
+                        {
+                            TextSpeed = 0.5f;
+                            WindowContent9.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_17");//慢
+                        }
+                        SettingController.Instance.SetTextSpeed(TextSpeed);
+                    });
                     break;
                 case 10:
                     var Text10 = _itemUIBinder.GetText("Text");
                     Text10.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_20");//是否开启提示
                     break;
                 case 11:
+                    //是否开启提示切换
+                    var WindowContent11 = _itemUIBinder.GetText("WindowContent");
+                    var LeftBtn11 = _itemUIBinder.GetButton("LeftBtn");
+                    var RightBtn11 = _itemUIBinder.GetButton("RightBtn");
+                    LeftBtn11.onClick.RemoveAllListeners();
+                    RightBtn11.onClick.RemoveAllListeners();
+                    WindowContent11.text = SettingController.Instance.GetIsOpenTip() ? LanguageManager.Instance.GetText("COMMON_TEXT_KEY_21") : LanguageManager.Instance.GetText("COMMON_TEXT_KEY_22");
+                    LeftBtn11.onClick.AddListener(() =>
+                    {
+                        if (SettingController.Instance.GetIsOpenTip())
+                        {
+                            SettingController.Instance.SetIsOpenTip(false);
+                            WindowContent11.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_22");
+                        }
+                        else
+                        {
+                            SettingController.Instance.SetIsOpenTip(true);
+                            WindowContent11.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_21");
+                        }
+                    });
+                    RightBtn11.onClick.AddListener(() =>
+                    {
+                        if (SettingController.Instance.GetIsOpenTip())
+                        {
+                            SettingController.Instance.SetIsOpenTip(false);
+                            WindowContent11.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_22");
+                        }
+                        else
+                        {
+                            SettingController.Instance.SetIsOpenTip(true);
+                            WindowContent11.text = LanguageManager.Instance.GetText("COMMON_TEXT_KEY_21");
+                        }
+                    });
                     break;
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(item.CachedRectTransform);

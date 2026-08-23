@@ -1761,24 +1761,15 @@ MonoBehaviour:
   - key: PagePanelOtherList
     componentType: GameObject
     target: {fileID: 7992465745966021631}
-  - key: PreviousPage
+  - key: ResetBtn
     componentType: GameObject
-    target: {fileID: 0}
-  - key: PreviousPage
+    target: {fileID: 5352892424923260474}
+  - key: ResetBtn
     componentType: Button
-    target: {fileID: 0}
-  - key: PreviousPage
+    target: {fileID: 5352892424923260474}
+  - key: ResetBtn
     componentType: Image
-    target: {fileID: 0}
-  - key: NextPage
-    componentType: GameObject
-    target: {fileID: 0}
-  - key: NextPage
-    componentType: Button
-    target: {fileID: 0}
-  - key: NextPage
-    componentType: Image
-    target: {fileID: 0}
+    target: {fileID: 5352892424923260474}
 --- !u!114 &3099845812589593783
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -39,6 +39,9 @@ namespace Cooking.UI
         /// <summary>其他按钮</summary>
         private Button _OtherBtn;
 
+        /// <summary>重置按钮</summary>
+        private Button _ResetBtn;
+
         /// <summary>通用设置界面列表</summary>
         private LoopListView2 _PagePanelGeneralList;
 
@@ -93,6 +96,8 @@ namespace Cooking.UI
         /// <summary>多语言类型加多语言文本的列表</summary>
         private List<LanguageTypeCode> _CurrentLanguageCodeList = new List<LanguageTypeCode>();
 
+        private SettingData _CurrentSettingData = new SettingData();
+
         public override void Init()
         {
             _UIBinder = this.transform.GetComponent<UIBinder>();
@@ -110,7 +115,18 @@ namespace Cooking.UI
                     });
                 }
 
-
+                var current = SettingController.Instance.GetSettingData();
+                _CurrentSettingData = new SettingData()
+                {
+                    masterVolume = current.masterVolume,
+                    AmbientSound = current.AmbientSound,
+                    sfxVolume = current.sfxVolume,
+                    resolutionWidth = current.resolutionWidth,
+                    resolutionHeight = current.resolutionHeight,
+                    language = current.language,
+                    TextSpeed = current.TextSpeed,
+                    IsOpenTip = current.IsOpenTip,
+                };
 
                 //组件绑定
                 _OutButton = _UIBinder.GetButton("OutButton");
@@ -118,6 +134,7 @@ namespace Cooking.UI
                 _KeyBtn = _UIBinder.GetButton("KeyBtn");
                 _TutorialBtn = _UIBinder.GetButton("TutorialBtn");
                 _OtherBtn = _UIBinder.GetButton("OtherBtn");
+                _ResetBtn = _UIBinder.GetButton("ResetBtn");
                 _PagePanelGeneralList = _UIBinder.GetGameObject("PagePanelGeneralList").GetComponent<LoopListView2>();
                 _PagePanelOtherList = _UIBinder.GetGameObject("PagePanelOtherList").GetComponent<LoopListView2>();
 
@@ -156,6 +173,7 @@ namespace Cooking.UI
                 _KeyBtn.onClick.AddListener(() => OnClickTab(BtnType.Key));
                 _TutorialBtn.onClick.AddListener(() => OnClickTab(BtnType.Tutorial));
                 _OtherBtn.onClick.AddListener(() => OnClickTab(BtnType.Other));
+                _ResetBtn.onClick.AddListener(() => OnClickResetButton());
 
                 LoadGeneralSettingConfig();
                 LoadOtherSettingConfig();
@@ -522,6 +540,15 @@ namespace Cooking.UI
             _OtherBtn.onClick.RemoveAllListeners();
 
             SettingController.Instance.SaveSetting();
+        }
+
+        /// <summary>重置按钮点击事件</summary>
+        private void OnClickResetButton()
+        {
+            SettingController.Instance.ResetSetting(_CurrentSettingData);
+            LanguageManager.Instance.SwitchLanguage(_CurrentSettingData.language);
+            _PagePanelGeneralList.RefreshAllShownItem();
+            _PagePanelOtherList.RefreshAllShownItem();
         }
     }
 

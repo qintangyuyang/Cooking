@@ -21,6 +21,28 @@ namespace Cooking.Controller
 
         private SettingData Data => PlayerDataManager.Instance.GetSettingData();
 
+        /// <summary>获取设置数据</summary>
+        public SettingData GetSettingData()
+        {
+            return PlayerDataManager.Instance.GetSettingData();
+        }
+
+        /// <summary>重置设置数据</summary>
+        public void ResetSetting(SettingData defaultSetting)
+        {
+            Data.masterVolume = defaultSetting.masterVolume;
+            Data.AmbientSound = defaultSetting.AmbientSound;
+            Data.sfxVolume = defaultSetting.sfxVolume;
+            Data.resolutionWidth = defaultSetting.resolutionWidth;
+            Data.resolutionHeight = defaultSetting.resolutionHeight;
+            Data.language = defaultSetting.language;
+            Data.TextSpeed = defaultSetting.TextSpeed;
+            Data.IsOpenTip = defaultSetting.IsOpenTip;
+
+            ApplyResolution();
+            EventManager.TriggerEvent(EventType.SettingChanged);
+        }
+
         /// <summary>获取文本速度</summary>
         public float GetTextSpeed()
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Cooking.Controller;
 using Cooking.Model;
 using LitJson;
 using Unity.Collections;
@@ -26,7 +27,7 @@ namespace Cooking.Manager
                 return _instance;
             }
         }
-        private LanguageManager(){}
+        private LanguageManager() { }
 
         //默认语言-中文
         private const LanguageType defaultLanguage = LanguageType.Chinese;
@@ -34,7 +35,7 @@ namespace Cooking.Manager
         private LanguageType currentLanguage;
 
         public LanguageType CurrentLanguage => currentLanguage;
-        
+
         //装某个语言的字典
         private Dictionary<string, string> languageDic = new Dictionary<string, string>();
 
@@ -44,15 +45,15 @@ namespace Cooking.Manager
                 { LanguageType.Chinese, "zh-CN" },
                 { LanguageType.English, "en-US" },
             };
-        
-        private const string PreferenceFileName = "LanguagePreference"; //偏好持久化文件名
+
 
         public void Initialize()
         {
-            LanguageType savedLang = LoadPreference();
+            var settingData = PlayerDataManager.Instance.GetSettingData();
+            LanguageType savedLang = settingData != null ? settingData.language : defaultLanguage;
             LoadLanguage(savedLang);
         }
-        
+
         /// <summary>
         /// 加载多语言
         /// </summary>
@@ -65,7 +66,7 @@ namespace Cooking.Manager
                 Debug.LogError($"[LanguageManager] 不支持的语言类型: {language}");
                 return;
             }
-            
+
             //规定多语言的json文件都放在默认的StreamingAssets文件夹下了
             string path = Application.streamingAssetsPath + "/Config/Language/" + languageCode + ".json";
 
@@ -128,45 +129,9 @@ namespace Cooking.Manager
 
             if (currentLanguage == language)
             {
-                //保存在偏好文件夹里
-                SavePreference(language);
+                //统一持久化到SettingData.Json
+                SettingController.Instance.SetLanguage(language);
             }
-        }
-        
-
-        //语言偏好保存本地实现持久化
-        private void SavePreference(LanguageType language)
-        {
-            var data = new Dictionary<string, string>()
-            {
-                { "language", LanguageCodeMap[language] },
-            };
-            JsonManager.Instance.SaveData(data, PreferenceFileName);
-        }
-
-        private LanguageType LoadPreference()
-        {
-            try
-            {
-                var data = JsonManager.Instance.LoadData<Dictionary<string, string>>(PreferenceFileName);
-
-                if (data != null && data.TryGetValue("language", out string langCode))
-                {
-                    foreach (var kvp in LanguageCodeMap)
-                    {
-                        if (kvp.Value == langCode)
-                        {
-                            return kvp.Key;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"[LanguageManager] 偏好加载失败，使用默认语言: {e.Message}");
-            }
-
-            return defaultLanguage;
         }
 
         /// <summary>

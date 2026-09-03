@@ -43,6 +43,14 @@ namespace Cooking.Controller
             EventManager.TriggerEvent(EventType.SettingChanged);
         }
 
+        //*********************************************获取设置数据*********************************************
+
+        /// <summary>获取语言</summary>
+        public LanguageType GetLanguage()
+        {
+            return Data.language;
+        }
+
         /// <summary>获取文本速度</summary>
         public float GetTextSpeed()
         {
@@ -83,6 +91,17 @@ namespace Cooking.Controller
         public void SetIsOpenTip(bool isOpen)
         {
             Data.IsOpenTip = isOpen;
+            EventManager.TriggerEvent(EventType.SettingChanged);
+        }
+
+
+
+        //*********************************************设置数据*********************************************
+
+        /// <summary>设置语言</summary>
+        public void SetLanguage(LanguageType language)
+        {
+            Data.language = language;
             EventManager.TriggerEvent(EventType.SettingChanged);
         }
 

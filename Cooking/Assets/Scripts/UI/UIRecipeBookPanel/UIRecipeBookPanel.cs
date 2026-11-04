@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cooking.Manager;
 using Cooking.Model;
+using SuperScrollView;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +21,7 @@ namespace Cooking.UI
         private Toggle TogPage3;
         private Toggle TogPage4;
         private int nowPage = -1;
+        private LoopListView2 ShowDishScrollView;
         private List<MenuData> MenuDatas = new List<MenuData>();
         public override void Init()
         {
@@ -32,6 +35,7 @@ namespace Cooking.UI
                 TogPage2 = _UIBinder.GetGameObject("TogPage2").GetComponent<Toggle>();
                 TogPage3 = _UIBinder.GetGameObject("TogPage3").GetComponent<Toggle>();
                 TogPage4 = _UIBinder.GetGameObject("TogPage4").GetComponent<Toggle>();
+                ShowDishScrollView = _UIBinder.GetGameObject("ShowDishScrollView").GetComponent<LoopListView2>();
 
                 //事件监听
                 OutButton.onClick.AddListener(OnClickOutButton);
@@ -67,6 +71,9 @@ namespace Cooking.UI
             }
             RefreshText();
             LoadMenuConfig();
+
+            GetListByMenuType(out var list, 1);
+            ShowDishScrollView.InitListView(list.Count, InitMenuList);
             //默认打开时执行第一页逻辑
             if (nowPage == -1)
             {
@@ -97,30 +104,43 @@ namespace Cooking.UI
             UIManager.Instance.CloseUI<UIRecipeBookPanel>();
         }
 
+        /// <summary>页面切换逻辑</summary>
         private void OnChangePage(int page)
         {
             if (nowPage != page)
             {
-                switch (page)
+                GetListByMenuType(out var list, page);
+                nowPage = page;
+                ShowDishScrollView.SetListItemCount(list.Count);
+                ShowDishScrollView.RefreshAllShownItem();
+                print("打开页面：" + page);
+            }
+        }
+
+        /// <summary>根据Type分类活动当前菜谱列表</summary>
+        private void GetListByMenuType(out List<MenuData> list, int type)
+        {
+            list = new List<MenuData>();
+            foreach (var item in MenuDatas)
+            {
+                if (item.Type == type)
                 {
-                    case 1:
-                        print("切换页面1");
-                        nowPage = page;
-                        break;
-                    case 2:
-                        print("切换页面2");
-                        nowPage = page;
-                        break;
-                    case 3:
-                        print("切换页面3");
-                        nowPage = page;
-                        break;
-                    case 4:
-                        print("切换页面4");
-                        nowPage = page;
-                        break;
+                    list.Add(item);
                 }
             }
+        }
+        /// <summary>菜谱页面列表</summary>
+        private LoopListViewItem2 InitMenuList(LoopListView2 list, int index)
+        {
+            if (index < 0)
+            {
+                return null;
+            }
+            LoopListViewItem2 item = list.NewListViewItem("DishImage");
+            var itemBinder = item.GetComponent<UIBinder>();
+            var image = itemBinder.GetImage("Icon");
+            image.sprite = Resources.Load<Sprite>("Sprite/UI/Ingred_Tomato_icon");
+            return item;
         }
 
     }

@@ -5,9 +5,9 @@
         "Materials": "Tomato"
     },
     {
-        "Type": 1,
-        "Name": "COMMON_TEXT_KEY_36",
-        "Materials": "Tomato"
+        "Type": 2,
+        "Name": "COMMON_TEXT_KEY_37",
+        "Materials": "Beef"
     },
     {
         "Type": 2,
@@ -18,6 +18,31 @@
         "Type": 3,
         "Name": "COMMON_TEXT_KEY_38",
         "Materials": "Mushroom|Cream"
+    },
+    {
+        "Type": 3,
+        "Name": "COMMON_TEXT_KEY_38",
+        "Materials": "Mushroom|Cream"
+    },
+    {
+        "Type": 3,
+        "Name": "COMMON_TEXT_KEY_38",
+        "Materials": "Mushroom|Cream"
+    },
+    {
+        "Type": 4,
+        "Name": "COMMON_TEXT_KEY_39",
+        "Materials": "Potato"
+    },
+    {
+        "Type": 4,
+        "Name": "COMMON_TEXT_KEY_39",
+        "Materials": "Potato"
+    },
+    {
+        "Type": 4,
+        "Name": "COMMON_TEXT_KEY_39",
+        "Materials": "Potato"
     },
     {
         "Type": 4,
